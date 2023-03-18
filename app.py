@@ -1,13 +1,15 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
+import os
 import openai
 from openai.embeddings_utils import get_embedding, cosine_similarity
+
 # openai.api_key = st.secrets["apikey"]
 st.title("📒 Notebook AI 🤖 ")
 
 if 'secret' not in st.session_state:
-    st.session_state.secret = st.secrets["apikey"]
+    st.session_state.secret = os.environ['OPENAI_API_KEY']
 
 user_secret = st.text_input(label = ":blue[OpenAI API key]",
                                 placeholder = "Paste your openAI API key, sk-",
@@ -19,7 +21,7 @@ if user_secret:
 # Load the data
 @st.experimental_memo
 def load_data():
-    data = pd.read_csv('Notes_embedding-2.csv')
+    data = pd.read_csv('nzgp.csv')
     return data
 
 def search_notebook(df, search_term, n=3, pprint=True):
